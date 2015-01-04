@@ -40,7 +40,6 @@ import org.dieschnittstelle.jee.esa.wsv.ITouchpointCRUDWebService;
 public class JAXRSClientInterpreter implements InvocationHandler {
 
 	// declare a baseurl
-	//test
 	private final String baseurl;
 
 	// declare a common path segment
