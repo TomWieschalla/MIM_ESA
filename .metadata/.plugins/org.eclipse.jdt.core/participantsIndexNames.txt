@@ -1,0 +1,5 @@
+INDEX VERSION 1.126
+L:\progs\uni\master1\ESA\eclipse\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\2572664240.index
+\org.dieschnittstelle.jee.esa.servlets\src
+C:\progs\uni\master1\ESA\eclipse\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\2572664240.index
+\org.dieschnittstelle.jee.esa.servlets\src
