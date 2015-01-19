@@ -1,12 +1,17 @@
 package org.dieschnittstelle.jee.esa.wsv.interpreter;
 
 import java.io.ByteArrayOutputStream;
+import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStreamWriter;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import javax.ws.rs.DELETE;
@@ -17,8 +22,10 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
 
+import org.apache.commons.codec.binary.Base64;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpEntityEnclosingRequest;
+import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpDelete;
@@ -26,10 +33,15 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpRequestBase;
-import org.apache.http.entity.ByteArrayEntity;
+import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.entity.*;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicHeader;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
+import org.codehaus.jackson.map.deser.FromStringDeserializer;
 import org.dieschnittstelle.jee.esa.wsv.interpreter.json.JSONObjectSerialiser;
 import org.dieschnittstelle.jee.esa.wsv.ITouchpointCRUDWebService;
 
@@ -74,57 +86,160 @@ public class JAXRSClientInterpreter implements InvocationHandler {
 	@Override
 	public Object invoke(Object proxy, Method meth, Object[] args)
 			throws Throwable {
-
+		logger.debug("<< invoke start >>");
+		logger.debug("method =" + meth);
+		logger.debug("args = " + Arrays.toString(args));
+		
+		if (meth.getName() == "toString") {
+			logger.debug("<< invoke end >>");
+			return serviceInterface.toString();
+		}
+		
 		// use a default http client
-		DefaultHttpClient defaultClient = new DefaultHttpClient();
+		HttpClient defaultClient = new DefaultHttpClient();
+		
+		// argsList for requestBody
+		ArrayList<Object> argsList = new ArrayList<Object>();
 		
 		// create the url using baseurl and commonpath
 		StringBuilder url = new StringBuilder();
 		url.append(baseurl);
 		url.append(commonPath);
+		logger.debug("url = " + url.toString());
 		
 		// check whether we have a path annotation and append the url (path
 		// params will be handled when looking at the method arguments
 		final Method method = serviceInterface.getDeclaredMethod(meth.getName(), meth.getParameterTypes());
-	
-		if (method.getAnnotation(Path.class) != null && args != null){
-			for (Object o : args){
-				Class<?> oClass = o.getClass();
-				Annotation[] annotations = oClass.getAnnotations();
-				for(Annotation anno : annotations){
-					if(anno instanceof PathParam){
-						url.append("/");
-						url.append(o);
+		
+		if (args != null){
+				if(method.getAnnotation(Path.class) != null){
+					Annotation[][] parameterAnnotations = method.getParameterAnnotations();
+					for (int j = 0; j < parameterAnnotations.length; j++) {
+						Annotation[] preAnnotation = parameterAnnotations[j];
+						if(preAnnotation.length > 0){
+							for (int i = 0; i < parameterAnnotations[j].length; i++) {
+								Annotation obj = parameterAnnotations[j][i];
+								if (obj.annotationType() == PathParam.class) {
+									url.append("/");
+									url.append(args[i]);
+									logger.debug("Method with PathParam = " + url.toString());
+								} else {
+									argsList.add(args[i]);
+								}	
+							}
+						} else {
+							argsList.add(args[j]);
+						}
+					}
+				} else {
+					for (Object object : args) {
+						argsList.add(object);
 					}
 				}
-			}
 		}
-		// a value that needs to be sent via the http request body
-
-		// check whether we have method arguments - only consider
-		// pathparam annotations here - if no args are passed, the value of
-		// args is null!
-		// if no pathparam annotation is present assume that the argument
-		// value is passed via the body of the http request
-
-		// if we have a path param, we need to replace the
-		// corresponding pattern in the url with the
-		// parameter value
-
-		// if we do not have a path param, we assume the argument
-		// value will be sent via the body of the request
-
-		// we create a httprequest object
-
+		
+		// declare a variable for the entity / body
+		HttpEntity entity = null;
+		
 		// check which of the http method annotation is present and
 		// instantiate request accordingly passing the url
+		if (method.getAnnotation(GET.class) != null){
+			logger.debug("GET-Method");
+			HttpGet request = new HttpGet(url.toString());
+			request.setHeader("content-type", "application/json");
+			HttpResponse response = defaultClient.execute(request);
+			try {
+				entity = response.getEntity();
+				logger.debug("Status Code: " + response.getStatusLine().getStatusCode());
+				if(entity != null) {
+					JSONObjectSerialiser serializer = new JSONObjectSerialiser();
+					logger.debug("<< invoke end >>");
+					
+					return serializer.readObject(entity.getContent(),method.getGenericReturnType());
+				}
+			} finally {
+				EntityUtils.consume(entity);
+			}
 
-		// add a header declaring that we accept json
-
-		// declare a variable for the entity / body
-
-		// if we have body content create the entity
-
+		} else if (method.getAnnotation(POST.class) != null){
+			logger.debug("POST-Method");
+			HttpPost request = new HttpPost(url.toString());
+			request.setHeader("Accept", "application/json");
+			request.setHeader("content-type", "application/json");
+			HttpResponse response;
+			
+			// if we have body content create the entity
+			if(argsList.size() > 0){
+				JSONObjectSerialiser serializer = new JSONObjectSerialiser();
+				ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+				for (Object object : argsList) {
+					serializer.writeObject(object, outStream);
+				}
+				ByteArrayEntity byteEntity = new ByteArrayEntity(outStream.toByteArray());
+				request.setEntity(byteEntity);
+				response = defaultClient.execute(request);
+				try {
+					logger.debug("Status-Code: " + response.getStatusLine().getStatusCode());
+					entity = response.getEntity();
+					if(entity != null) {
+						logger.debug("<< invoke end >>");
+						
+						return serializer.readObject(entity.getContent(),method.getReturnType());
+					}
+				} finally {
+					EntityUtils.consume(entity);
+				}
+			}
+			
+		} else if (method.getAnnotation(PUT.class) != null){
+			logger.debug("PUT-Method");
+			HttpPut request = new HttpPut(url.toString());
+			request.setHeader("Accept", "application/json");
+			request.setHeader("content-type", "application/json");
+			HttpResponse response;
+			
+			// if we have body content create the entity
+			if(args.length > 0){
+				JSONObjectSerialiser serializer = new JSONObjectSerialiser();
+				ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+				for (Object object : argsList) {
+					serializer.writeObject(object, outStream);
+				}
+				ByteArrayEntity byteEntity = new ByteArrayEntity(outStream.toByteArray());
+				request.setEntity(byteEntity);
+				response = defaultClient.execute(request);
+				try {
+					logger.debug("Status-Code: " + response.getStatusLine().getStatusCode());
+					entity = response.getEntity();
+					if(entity != null) {
+						logger.debug("<< invoke end >>");
+						
+						return serializer.readObject(entity.getContent(),method.getReturnType());
+					}
+				} finally {
+					EntityUtils.consume(entity);
+				}
+			}
+		} else if (method.getAnnotation(DELETE.class) != null){
+			logger.debug("DELETE-Method");
+			HttpDelete request = new HttpDelete(url.toString());
+			request.setHeader("Accept", "application/json");
+			request.setHeader("content-type", "application/json");
+			HttpResponse response = defaultClient.execute(request);
+			try {
+				entity = response.getEntity();
+				logger.debug("Status Code: " + response.getStatusLine().getStatusCode());
+				if(entity != null) {
+					JSONObjectSerialiser serializer = new JSONObjectSerialiser();
+					logger.debug("<< invoke end >>");
+					
+					return serializer.readObject(entity.getContent(),method.getGenericReturnType());
+				}
+			} finally {
+				EntityUtils.consume(entity);
+			}
+		}
+		
 		// use an output stream for writing json
 
 		// write the object to the stream using the jsonSerialiser

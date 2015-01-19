@@ -1,6 +1,7 @@
 package org.dieschnittstelle.jee.esa.wsv.interpreter.json;
 
 import java.io.Serializable;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
@@ -220,6 +221,8 @@ public class JSONObjectMapper {
 				if (Modifier.isAbstract(((Class) type).getModifiers())) {
 					// TODO: include a handling for abstract classes considering
 					// the JsonTypeInfo annotation that might be set on type
+					Annotation annoTypeInfo = ((Class)type).getAnnotation(JsonTypeInfo.class);
+					obj = json.path("id");
 					throw new ObjectMappingException(
 							"cannot instantiate abstract class: " + type);
 				} else {
