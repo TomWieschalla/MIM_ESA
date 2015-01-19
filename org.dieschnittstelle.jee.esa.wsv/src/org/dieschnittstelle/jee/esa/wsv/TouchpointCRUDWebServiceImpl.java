@@ -21,11 +21,11 @@ public class TouchpointCRUDWebServiceImpl implements ITouchpointCRUDWebService {
 	}
 
 	@Override
-	public List<StationaryTouchpoint> readAllTouchpoints() {
+	public List<AbstractTouchpoint> readAllTouchpoints() {
 		show("readAllTouchpoints()");
 		show("servletContext: " + servletContext);
 
-		GenericCRUDExecutor<StationaryTouchpoint> exec = (GenericCRUDExecutor<StationaryTouchpoint>) servletContext
+		GenericCRUDExecutor<AbstractTouchpoint> exec = (GenericCRUDExecutor<AbstractTouchpoint>) servletContext
 				.getAttribute("touchpointCRUD");
 
 		return exec.readAllObjects();
@@ -47,11 +47,11 @@ public class TouchpointCRUDWebServiceImpl implements ITouchpointCRUDWebService {
 	}
 
 	@Override
-	public StationaryTouchpoint createTouchpoint(StationaryTouchpoint touchpoint) {
+	public AbstractTouchpoint createTouchpoint(AbstractTouchpoint touchpoint) {
 		show("createTouchpoint()");
 		show("servletContext: " + servletContext);
 
-		GenericCRUDExecutor<StationaryTouchpoint> exec = (GenericCRUDExecutor<StationaryTouchpoint>) servletContext
+		GenericCRUDExecutor<AbstractTouchpoint> exec = (GenericCRUDExecutor<AbstractTouchpoint>) servletContext
 				.getAttribute("touchpointCRUD");
 		
 		return exec.createObject(touchpoint);
@@ -62,18 +62,18 @@ public class TouchpointCRUDWebServiceImpl implements ITouchpointCRUDWebService {
 		show("deleteTouchpoint()");
 		show("servletContext: " + servletContext);
 
-		GenericCRUDExecutor<StationaryTouchpoint> exec = (GenericCRUDExecutor<StationaryTouchpoint>) servletContext
+		GenericCRUDExecutor<AbstractTouchpoint> exec = (GenericCRUDExecutor<AbstractTouchpoint>) servletContext
 				.getAttribute("touchpointCRUD");
 		
 		return exec.deleteObject(id);
 	}
 
 	@Override
-	public StationaryTouchpoint updateTouchpoint(int id, StationaryTouchpoint tp) {
+	public AbstractTouchpoint updateTouchpoint(int id, AbstractTouchpoint tp) {
 		show("updateTouchpoint()");
 		show("servletContext: " + servletContext);
 
-		GenericCRUDExecutor<StationaryTouchpoint> exec = (GenericCRUDExecutor<StationaryTouchpoint>) servletContext
+		GenericCRUDExecutor<AbstractTouchpoint> exec = (GenericCRUDExecutor<AbstractTouchpoint>) servletContext
 				.getAttribute("touchpointCRUD");
 		
 		return exec.updateObject(tp);

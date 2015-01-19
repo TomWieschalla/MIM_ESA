@@ -27,16 +27,16 @@ public interface ITouchpointCRUDWebService {
 	
 	// GET /touchpoints: BODY
 	@GET
-	public List<StationaryTouchpoint> readAllTouchpoints();
+	public List<AbstractTouchpoint> readAllTouchpoints();
 	
 	// GET /touchpoints/{id}: BODY
 	@GET
 	@Path("/{id}")
-	public StationaryTouchpoint readTouchpoint(@PathParam("id") int id);
+	public AbstractTouchpoint readTouchpoint(@PathParam("id") int id);
 	
 	// POST /touchpoints: BODY
 	@POST
-	public StationaryTouchpoint createTouchpoint(StationaryTouchpoint touchpoint); 
+	public AbstractTouchpoint createTouchpoint(AbstractTouchpoint touchpoint); 
 	
 //	DELETE  /touchpoints/{id}: 
 	@DELETE
@@ -49,6 +49,6 @@ public interface ITouchpointCRUDWebService {
 // PUT /touchpoints/{id}
 	@PUT
 	@Path("/{id}")
-	public StationaryTouchpoint updateTouchpoint(@PathParam("id") int id,StationaryTouchpoint tp);
+	public AbstractTouchpoint updateTouchpoint(@PathParam("id") int id,AbstractTouchpoint tp);
 	
 }
