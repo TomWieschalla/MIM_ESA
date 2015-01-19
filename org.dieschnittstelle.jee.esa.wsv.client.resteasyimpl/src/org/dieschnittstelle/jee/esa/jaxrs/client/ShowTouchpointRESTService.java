@@ -44,11 +44,11 @@ public class ShowTouchpointRESTService {
 		 */
 		ITouchpointCRUDWebService serviceClient = 
 				ProxyFactory.create(ITouchpointCRUDWebService.class, 
-						"http://localhost:8888/org.dieschnittstelle.jee.esa.wsv", 
+						"http://localhost:8080/org.dieschnittstelle.jee.esa.wsv", 
 						new ApacheHttpClient4Executor());
 
 		// 1) read out all touchpoints
-		List<StationaryTouchpoint> tps = serviceClient.readAllTouchpoints();
+		List<AbstractTouchpoint> tps = serviceClient.readAllTouchpoints();
 		show("read all: " + tps);
 
 		// 2) delete the touchpoint if there is one
@@ -62,7 +62,7 @@ public class ShowTouchpointRESTService {
 
 		Address addr = new Address("Luxemburger Strasse", "10", "13353",
 				"Berlin");
-		StationaryTouchpoint tp = new StationaryTouchpoint(-1,
+		AbstractTouchpoint tp = new StationaryTouchpoint(-1,
 				"BHT Verkaufsstand", addr);
 		tp = serviceClient.createTouchpoint(tp);
 		show("created: " + tp);

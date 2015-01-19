@@ -40,7 +40,7 @@ public class UseJAXRSClientInterpreter {
 		step();
 
 		// 1) read out all touchpoints
-		List<StationaryTouchpoint> tps = serviceClient.readAllTouchpoints();
+		List<AbstractTouchpoint> tps = serviceClient.readAllTouchpoints();
 		show("read all: " + tps);
 
 		// 2) delete the touchpoint if there is one
@@ -55,9 +55,9 @@ public class UseJAXRSClientInterpreter {
 
 		Address addr = new Address("Luxemburger Strasse", "10", "13353",
 				"Berlin");
-		StationaryTouchpoint tp = new StationaryTouchpoint(-1,
+		AbstractTouchpoint tp = new StationaryTouchpoint(-1,
 				"BHT Verkaufsstand", addr);
-		tp = (StationaryTouchpoint)serviceClient.createTouchpoint(tp);
+		tp = (AbstractTouchpoint)serviceClient.createTouchpoint(tp);
 		show("created: " + tp);
 		
 		// we read it out again
