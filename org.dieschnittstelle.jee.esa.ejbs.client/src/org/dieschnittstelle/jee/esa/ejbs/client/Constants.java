@@ -109,7 +109,8 @@ public class Constants {
 	public static final String TRANSACTIONS_CRUD_BEAN = "ejb:org.dieschnittstelle.jee.esa.ejbs/org.dieschnittstelle.jee.esa.shared.ejbmodule.crm/CustomerTransactionCRUDStateless!org.dieschnittstelle.jee.esa.crm.ejbs.crud.CustomerTransactionCRUDRemote";
 	public static final String POS_CRUD_BEAN = "ejb:org.dieschnittstelle.jee.esa.ejbs/org.dieschnittstelle.jee.esa.shared.ejbmodule.erp/PointOfSaleCRUDStateless!org.dieschnittstelle.jee.esa.erp.ejbs.crud.PointOfSaleCRUDRemote";
 	public static final String STOCK_SYSTEM_BEAN = "ejb:org.dieschnittstelle.jee.esa.ejbs/org.dieschnittstelle.jee.esa.shared.ejbmodule.erp/StockSystemSingleton!org.dieschnittstelle.jee.esa.erp.ejbs.StockSystemRemote";
-
+	public static final String PRODUCT_BEAN = "ejb:org.dieschnittstelle.jee.esa.ejbs/org.dieschnittstelle.jee.esa.shared.ejbmodule.erp/ProductCRUDStateless!org.dieschnittstelle.jee.esa.erp.ejbs.crud.ProductCRUDRemote";
+	
 	/*
 	 * constants for the objects that are dealt with in the different accessors
 	 * to the beans
@@ -148,19 +149,19 @@ public class Constants {
 
 		PRODUCT_1 = new IndividualisedProductItem("Schrippe", ProductType.ROLL,
 				720);
-		// PRODUCT_1.setId(1);
+//		 PRODUCT_1.setId(1);
 
 		PRODUCT_2 = new IndividualisedProductItem("Kirschplunder",
 				ProductType.PASTRY, 1080);
-		// PRODUCT_2.setId(2);
+//		 PRODUCT_2.setId(2);
 
 		CAMPAIGN_1 = new Campaign();
-		// CAMPAIGN_1.setId(3);
+//		 CAMPAIGN_1.setId(3);
 		CAMPAIGN_1.addBundle(new ProductBundle(PRODUCT_1, 5));
 		CAMPAIGN_1.addBundle(new ProductBundle(PRODUCT_2, 2));
 
 		CAMPAIGN_2 = new Campaign();
-		// CAMPAIGN_2.setId(4);
+//		 CAMPAIGN_2.setId(4);
 		CAMPAIGN_2.addBundle(new ProductBundle(PRODUCT_2, 3));
 
 		CUSTOMER_1 = new Customer("Anna", "Musterfrau", Gender.W);

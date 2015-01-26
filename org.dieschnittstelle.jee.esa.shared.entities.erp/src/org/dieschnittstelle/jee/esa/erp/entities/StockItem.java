@@ -1,6 +1,10 @@
 package org.dieschnittstelle.jee.esa.erp.entities;
 
+import java.io.Serializable;
+
 import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.ManyToOne;
@@ -15,11 +19,13 @@ import javax.persistence.Table;
 
 import org.jboss.logging.Logger;
 
-//@Entity
+@Entity
 @Table(name = "stock")
 @IdClass(ProductAtPosPK.class)
-public class StockItem {
+public class StockItem implements Serializable{
 
+	private static final long serialVersionUID = -523570877265085869L;
+	
 	protected static Logger logger = Logger.getLogger(StockItem.class);
 
 	@Id

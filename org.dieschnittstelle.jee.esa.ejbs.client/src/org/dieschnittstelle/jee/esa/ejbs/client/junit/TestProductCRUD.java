@@ -28,7 +28,6 @@ public class TestProductCRUD {
 		List<AbstractProduct> prodlistBefore;
 		// read all products
 		assertNotNull("product list can be read",prodlistBefore = client.readAllProducts());
-		
 		/* CREATE + READ */
 		// create and use the id
 		PRODUCT_1.setId(client.createProduct(PRODUCT_1).getId());

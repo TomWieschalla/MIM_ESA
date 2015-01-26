@@ -2,16 +2,20 @@ package org.dieschnittstelle.jee.esa.erp.entities;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.OneToOne;
 
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.hibernate.validator.cfg.context.Cascadable;
 
-//@Entity
+@Entity
+@Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)
 public class IndividualisedProductItem extends AbstractProduct implements Serializable {
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 5109263395081656350L;
 
 	private ProductType productType;

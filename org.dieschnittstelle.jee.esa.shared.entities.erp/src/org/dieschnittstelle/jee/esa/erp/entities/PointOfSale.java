@@ -15,7 +15,7 @@ import javax.persistence.PreUpdate;
 
 import org.jboss.logging.Logger;
 
-//@Entity
+@Entity
 public class PointOfSale implements Serializable {
 
 	/**
@@ -74,6 +74,15 @@ public class PointOfSale implements Serializable {
 	@PreUpdate
 	public void onPreUpdate() {
 		logger.info("@PreUpdate: " + this);		
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("PointOfSale [id=");
+		builder.append(id);
+		builder.append("]");
+		return builder.toString();
 	}
 
 

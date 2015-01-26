@@ -50,7 +50,6 @@ public class CustomerTransaction implements Serializable {
 	 * UE JPA1.1
 	 */
 	@OneToMany(cascade={CascadeType.PERSIST,CascadeType.MERGE,CascadeType.REMOVE})
-	//@OneToMany
 	private List<CrmProductBundle> products = new ArrayList<CrmProductBundle>();
 
 	private int value;
