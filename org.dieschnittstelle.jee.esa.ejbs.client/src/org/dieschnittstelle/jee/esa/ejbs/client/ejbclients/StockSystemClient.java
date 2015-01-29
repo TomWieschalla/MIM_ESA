@@ -23,7 +23,7 @@ public class StockSystemClient implements StockSystemRemote {
 	
 	
 	@Override
-	public AbstractProduct addToStock(AbstractProduct product, int pointOfSaleId, int units) {
+	public StockItem addToStock(AbstractProduct product, int pointOfSaleId, int units) {
 		return this.proxy.addToStock(product, pointOfSaleId, units);
 	}
 

@@ -23,7 +23,8 @@ public class ProductCRUDClient implements ProductCRUDRemote {
 	public AbstractProduct createProduct(AbstractProduct prod) {
 		
 		AbstractProduct created = proxy.createProduct(prod);
-		System.out.println("createProduct() with id: "+created.getId());
+		prod.setId(created.getId());
+		
 		return created;
 
 	}

@@ -2,6 +2,8 @@ package org.dieschnittstelle.jee.esa.erp.entities;
 
 import java.io.Serializable;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
@@ -24,7 +26,7 @@ import org.dieschnittstelle.jee.esa.entities.GenericCRUDEntity;
 //jpa annotations
 @Entity
 @Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)
-
+@Access(AccessType.FIELD)
 // jaxrs/jackson annotations
 @JsonTypeInfo(use=JsonTypeInfo.Id.CLASS, include=JsonTypeInfo.As.PROPERTY, property="@class")
 public abstract class AbstractProduct implements Serializable, GenericCRUDEntity {

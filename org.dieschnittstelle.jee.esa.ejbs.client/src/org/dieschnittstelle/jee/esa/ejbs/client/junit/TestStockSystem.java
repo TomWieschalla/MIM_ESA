@@ -30,7 +30,7 @@ public class TestStockSystem {
 	@Before
 	public void prepareContext() throws Exception {
 		// we reset the ids on the local entities
-//		Constants.resetEntities();	
+		Constants.resetEntities();	
 		// initialise the clients
 		productCRUDClient = new ProductCRUDClient();		
 		stockSystemClient = new StockSystemClient();		
@@ -45,44 +45,38 @@ public class TestStockSystem {
 	
 	@Test 
 	public void stockSystemWorks() {
-		for (AbstractProduct p : productCRUDClient.readAllProducts()) {
-			System.out.println(p.getId()+","+p.getName());
-		}
-		System.out.println("Produckt1: "+PRODUCT_1.getId() + " Produkt2: "+PRODUCT_2.getId());
+
 		// add to stock
-		PRODUCT_1 = (IndividualisedProductItem)stockSystemClient.addToStock(PRODUCT_1, TOUCHPOINT_1.getErpPointOfSaleId(), 100);
-		PRODUCT_2 = (IndividualisedProductItem)stockSystemClient.addToStock(PRODUCT_2, TOUCHPOINT_1.getErpPointOfSaleId(), 50);
-		PRODUCT_1 = (IndividualisedProductItem)stockSystemClient.addToStock(PRODUCT_1, TOUCHPOINT_2.getErpPointOfSaleId(), 75);
-		for (AbstractProduct prod : stockSystemClient.getAllProductsOnStock()){
-			System.out.println("OnSTock: "+prod.getId()+","+prod.getName());
-		}
-		
+		stockSystemClient.addToStock(PRODUCT_1, TOUCHPOINT_1.getErpPointOfSaleId(), 100);
+		stockSystemClient.addToStock(PRODUCT_2, TOUCHPOINT_1.getErpPointOfSaleId(), 50);
+		stockSystemClient.addToStock(PRODUCT_1, TOUCHPOINT_2.getErpPointOfSaleId(), 75);
+
 		assertEquals("add/read correct for p1/tp1", 100, stockSystemClient.getUnitsOnStock(PRODUCT_1, TOUCHPOINT_1.getErpPointOfSaleId()));
 		assertEquals("add/read correct for p2/tp1", 50, stockSystemClient.getUnitsOnStock(PRODUCT_2, TOUCHPOINT_1.getErpPointOfSaleId()));
 		assertEquals("add/read correct for p1/tp2", 75, stockSystemClient.getUnitsOnStock(PRODUCT_1, TOUCHPOINT_2.getErpPointOfSaleId()));
 		
 		stockSystemClient.removeFromStock(PRODUCT_1, TOUCHPOINT_1.getErpPointOfSaleId(), 5);
 		assertEquals("remove correct for p1/tp1", 95, stockSystemClient.getUnitsOnStock(PRODUCT_1, TOUCHPOINT_1.getErpPointOfSaleId()));
-//
-//		// read out all products on stock for tp1 and tp2 and check whether size and content is correct
-//		List products_tp1 = stockSystemClient.getProductsOnStock(TOUCHPOINT_1.getErpPointOfSaleId());
-//		assertEquals("size of products at touchpoint correct for tp1", 2, products_tp1.size());
-//
-//		List products_tp2 = stockSystemClient.getProductsOnStock(TOUCHPOINT_2.getErpPointOfSaleId());
-//		assertEquals("size of products at touchpoint correct for tp2", 1, products_tp2.size());		
-//		assertEquals("returned product for touchpoint correct for tp2", PRODUCT_1.getName(), ((IndividualisedProductItem)products_tp2.get(0)).getName());
-//		
-//		// check that total number of units is ok
-//		assertEquals("total units on stock correct for p1", 170, stockSystemClient.getTotalUnitsOnStock(PRODUCT_1));
-//		
-//		// check that we get the correct touchpoints for the products
-//		List<Integer> touchpoints_p1 = stockSystemClient.getPointsOfSale(PRODUCT_1);
-//		List<Integer> touchpoints_p2 = stockSystemClient.getPointsOfSale(PRODUCT_2);
-//			
-//		assertEquals("number of touchpoints correct for p1",2,touchpoints_p1.size());
-//		assertEquals("number of touchpoints correct for p2",1,touchpoints_p2.size());
-//		assertTrue("touchpoint correct for p2", touchpoints_p2.contains(new Integer(TOUCHPOINT_1.getErpPointOfSaleId())));
-//		
+
+		// read out all products on stock for tp1 and tp2 and check whether size and content is correct
+		List products_tp1 = stockSystemClient.getProductsOnStock(TOUCHPOINT_1.getErpPointOfSaleId());
+		assertEquals("size of products at touchpoint correct for tp1", 2, products_tp1.size());
+
+		List products_tp2 = stockSystemClient.getProductsOnStock(TOUCHPOINT_2.getErpPointOfSaleId());
+		assertEquals("size of products at touchpoint correct for tp2", 1, products_tp2.size());		
+		assertEquals("returned product for touchpoint correct for tp2", PRODUCT_1.getName(), ((IndividualisedProductItem)products_tp2.get(0)).getName());
+		
+		// check that total number of units is ok
+		assertEquals("total units on stock correct for p1", 170, stockSystemClient.getTotalUnitsOnStock(PRODUCT_1));
+		
+		// check that we get the correct touchpoints for the products
+		List<Integer> touchpoints_p1 = stockSystemClient.getPointsOfSale(PRODUCT_1);
+		List<Integer> touchpoints_p2 = stockSystemClient.getPointsOfSale(PRODUCT_2);
+			
+		assertEquals("number of touchpoints correct for p1",2,touchpoints_p1.size());
+		assertEquals("number of touchpoints correct for p2",1,touchpoints_p2.size());
+		assertTrue("touchpoint correct for p2", touchpoints_p2.contains(new Integer(TOUCHPOINT_1.getErpPointOfSaleId())));
+		
 }
 	
 

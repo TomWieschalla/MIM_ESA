@@ -17,7 +17,7 @@ public interface StockSystemRemote {
 		 * @param pointOfSaleId
 		 * @param units
 		 */
-		public AbstractProduct addToStock(AbstractProduct product,int pointOfSaleId,int units);
+		public StockItem addToStock(AbstractProduct product,int pointOfSaleId,int units);
 
 		/**
 		 * removes some units of a product from the stock of a point of sale
