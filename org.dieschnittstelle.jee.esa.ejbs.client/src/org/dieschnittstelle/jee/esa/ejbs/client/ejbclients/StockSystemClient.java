@@ -59,4 +59,10 @@ public class StockSystemClient implements StockSystemRemote {
 	}
 
 
+	@Override
+	public int getUnitsOnStock(int productId, int pointOfSaleId) {
+		return proxy.getUnitsOnStock(productId, pointOfSaleId);
+	}
+
+
 }

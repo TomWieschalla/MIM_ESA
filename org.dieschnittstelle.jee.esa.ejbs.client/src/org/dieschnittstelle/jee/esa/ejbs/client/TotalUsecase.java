@@ -130,11 +130,13 @@ public class TotalUsecase {
 				try {
 					// create a shopping session and initialise it such that
 					// it can access the required beans
-					ShoppingSession session = new ShoppingSession(); /*
-																	 * new
-																	 * ShoppingSessionFacadeClient
-																	 * ();
-																	 */
+
+//					ShoppingSession session = new ShoppingSession();
+//					
+//					session.initialise();
+					
+					ShoppingBusinessDelegate session = new ShoppingSessionFacadeClient();
+					
 					session.initialise();
 
 					// add a customer and a touchpoint
@@ -163,6 +165,8 @@ public class TotalUsecase {
 		} catch (Exception e) {
 			logger.error("got exception during shopping: " + e, e);
 		}
+		logger.info("doShopping(): done. \n\nNOTE: The following exception, which you might see above, is intended: \"verifyCampaigns() failed for productBundle (...)\"");
+		if (this.stepping) Util.step();
 	}
 
 	public void showTransactions() {

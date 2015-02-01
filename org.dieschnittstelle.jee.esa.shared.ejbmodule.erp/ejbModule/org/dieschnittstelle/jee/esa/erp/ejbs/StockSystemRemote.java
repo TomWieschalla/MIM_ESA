@@ -52,6 +52,10 @@ public interface StockSystemRemote {
 		 */
 		public int getUnitsOnStock(AbstractProduct product, int pointOfSaleId);
 
+		
+		public int getUnitsOnStock(int productId, int pointOfSaleId);
+		
+		
 		/**
 		 * returns the total number of units on stock for some product
 		 * 
