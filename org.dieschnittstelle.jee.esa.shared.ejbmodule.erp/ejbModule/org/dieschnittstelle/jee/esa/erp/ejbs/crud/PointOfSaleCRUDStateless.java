@@ -3,6 +3,8 @@ package org.dieschnittstelle.jee.esa.erp.ejbs.crud;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+import javax.jws.WebService;
+import javax.jws.soap.SOAPBinding;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -22,6 +24,7 @@ public class PointOfSaleCRUDStateless implements PointOfSaleCRUDRemote, PointOfS
 	
 	/*
 	 * UE ADD1: comment out/in @TransactionAttribute
+	 * (->PostPersist sofort nach Abschluss der Transaktion)
 	 */
 	@Override
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
