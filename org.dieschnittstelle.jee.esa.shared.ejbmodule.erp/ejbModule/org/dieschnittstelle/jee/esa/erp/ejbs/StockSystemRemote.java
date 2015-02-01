@@ -3,73 +3,46 @@ package org.dieschnittstelle.jee.esa.erp.ejbs;
 import java.util.List;
 
 import javax.ejb.Remote;
+import javax.jws.WebService;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 
 import org.dieschnittstelle.jee.esa.erp.entities.AbstractProduct;
 import org.dieschnittstelle.jee.esa.erp.entities.StockItem;
 
 @Remote
+@WebService
+@Path("/stock")
+@Consumes({ "application/json" })
+@Produces({ "application/json" })
 public interface StockSystemRemote {
 	
-		/**
-		 * adds some units of a product to the stock of a point of sale
-		 *
-		 * @param product
-		 * @param pointOfSaleId
-		 * @param units
-		 */
+		@POST
 		public StockItem addToStock(AbstractProduct product,int pointOfSaleId,int units);
 
-		/**
-		 * removes some units of a product from the stock of a point of sale
-		 *	
-		 * @param product
-		 * @param pointOfSaleId
-		 * @param units
-		 */
+		@DELETE
 		public boolean removeFromStock(AbstractProduct product,int pointOfSaleId,int units);
 		
-		/**
-		 * returns all products on stock of some pointOfSale
-		 * 
-		 * @param pointOfSaleId
-		 * @return
-		 */
+		@GET
 		public List<AbstractProduct> getProductsOnStock(int pointOfSaleId);
 
-		/**
-		 * returns all products on stock
-		 * 
-		 * @return
-		 */
+		@GET
 		public List<AbstractProduct> getAllProductsOnStock();
 
-		/**
-		 * returns the units on stock for a product at some point of sale
-		 * 
-		 * @param product
-		 * @param pointOfSaleId
-		 * @return
-		 */
+		@GET
 		public int getUnitsOnStock(AbstractProduct product, int pointOfSaleId);
 
-		
-		public int getUnitsOnStock(int productId, int pointOfSaleId);
-		
-		
-		/**
-		 * returns the total number of units on stock for some product
-		 * 
-		 * @param product
-		 * @return
-		 */
+		@GET
+		public int getUnitsOnStockWithId(int productId, int pointOfSaleId);
+				
+		@GET
 		public int getTotalUnitsOnStock(AbstractProduct product);
 		
-		/**
-		 * returns the points of sale where some product is available
-		 * 
-		 * @param product
-		 * @return
-		 */
+		@GET
 		public List<Integer> getPointsOfSale(AbstractProduct product);
 
 }
