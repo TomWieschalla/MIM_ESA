@@ -74,7 +74,7 @@ public class Customer implements Serializable {
 	 * UE JPA1.2 
 	 */
 
-	@OneToMany(mappedBy="customer", fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="customer", fetch=FetchType.LAZY)
 	private Collection<CustomerTransaction> transactions;
 	
 	public void addTouchpoint(AbstractTouchpoint touchpoint) {
