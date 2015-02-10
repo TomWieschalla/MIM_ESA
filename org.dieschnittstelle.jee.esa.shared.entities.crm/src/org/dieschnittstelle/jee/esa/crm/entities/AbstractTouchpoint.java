@@ -73,6 +73,8 @@ public abstract class AbstractTouchpoint implements Serializable, GenericCRUDEnt
 
 	/*
 	 * UE JWS2: kommentieren Sie @XmlTransient aus
+	 * UE ADD1: JsonIgnore auskommentieren
+	 * (-> kein Lazy loading möglich)
 	 */
 	//@XmlTransient
 	@JsonIgnore

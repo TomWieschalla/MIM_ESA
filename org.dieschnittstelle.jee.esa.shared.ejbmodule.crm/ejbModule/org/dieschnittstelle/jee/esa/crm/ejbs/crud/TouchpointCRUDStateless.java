@@ -32,8 +32,9 @@ public class TouchpointCRUDStateless implements TouchpointCRUDRemote,
 
 		/*
 		 * UE ADD1: swap true/false
+		 * (-> EJBTransactionRolledbackException, Entität wird nicht persistiert)
 		 */		
-		if (/*true*/false) {
+		if (false) {
 			throw new ShoppingException(
 					ShoppingException.ShoppingSessionExceptionReason.UNKNOWN);
 		} else {

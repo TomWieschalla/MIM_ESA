@@ -130,10 +130,6 @@ public class TotalUsecase {
 				try {
 					// create a shopping session and initialise it such that
 					// it can access the required beans
-
-//					ShoppingSession session = new ShoppingSession();
-//					
-//					session.initialise();
 					
 					ShoppingBusinessDelegate session = new ShoppingSessionFacadeClient();
 					

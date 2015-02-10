@@ -60,8 +60,16 @@ public class StockSystemClient implements StockSystemRemote {
 
 
 	@Override
-	public int getUnitsOnStock(int productId, int pointOfSaleId) {
-		return proxy.getUnitsOnStock(productId, pointOfSaleId);
+	public int getUnitsOnStockWithId(int productId, int pointOfSaleId) {
+		return proxy.getUnitsOnStockWithId(productId, pointOfSaleId);
+	}
+
+
+	@Override
+	public StockItem updateSpecificStockItem(AbstractProduct product,
+			int pointOfSaleId) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

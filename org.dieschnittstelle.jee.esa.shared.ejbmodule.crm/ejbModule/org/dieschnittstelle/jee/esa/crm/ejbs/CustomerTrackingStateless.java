@@ -7,6 +7,8 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 
 import org.dieschnittstelle.jee.esa.crm.ejbs.crud.CustomerTransactionCRUDLocal;
 import org.dieschnittstelle.jee.esa.crm.entities.CustomerTransaction;
@@ -32,7 +34,8 @@ public class CustomerTrackingStateless implements CustomerTrackingRemote,Custome
 		logger.info("<constructor>: " + this);
 	}
 
-	public void createTransaction(CustomerTransaction transaction) {
+	@TransactionAttribute(TransactionAttributeType.MANDATORY)
+	public void createTransaction(CustomerTransaction transaction) throws ShoppingException {
 		logger.info("createTransaction(): " + transaction);
 		
 		customerTransactionCRUD.createTransaction(transaction);
